@@ -1,11 +1,8 @@
 ---
-title: API Reference
+title: PixelPeak API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
-  - ruby
-  - python
-  - javascript
 
 toc_footers:
   - <a href='#'>Sign Up for a Developer Key</a>
@@ -19,221 +16,177 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
-
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
-
-This example API documentation page was created with [Slate](https://github.com/slatedocs/slate). Feel free to edit it and use it as a base for your own API's documentation.
+Welcome to the PixelPeak API. The one stop page for all DevOps health checking, network monitoring, and more!
 
 # Authentication
 
 > To authorize, use this code:
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
+```shell
+# With API calls you pass the token inline to authorize your request.
+curl "api_endpoint_here?token=<token>"
 ```
 
-```python
-import kittn
+PixelPeak uses API keys to allow access to the API. You can register a new API key at our [developer portal](http://example.com/developers).
 
-api = kittn.authorize('meowmeowmeow')
-```
+# Git API
+
+## Add Commit
 
 ```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
+curl "http://pixelpeak-dev.aigdev.com/api/git/addcommit?token=<token>&author=<author>&branch=<branch>"
 ```
 
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-```
-
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
-
-> The above command returns JSON structured like this:
+> The above command returns a message
 
 ```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
+Adding Git Commit! Payload: {branch, author}
 ```
 
-This endpoint retrieves all kittens.
+This endpoint adds a commit
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`GET http://pixelpeak-dev.aigdev.com/api/git/addcommit`
+### URL Parameters
 
-### Query Parameters
+Parameter | Required | Description
+--------- | -------- | -----------
+token  | Yes | Your API Token
+author | Yes | Author who made the commit
+branch | Yes | The branch the commit was made on
 
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
+## Get Commits
 
 ```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
+curl "http://pixelpeak-dev.aigdev.com/api/git/getcommits?token=<token>"
 ```
 
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
+> The above command returns a message in JSON
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+  [  
+    id: "1",
+    author: "Steve",
+    branch: "master"
+  ]
 }
 ```
-
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+This endpoint returns a JSON array of all commits.
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
-
+`GET http://pixelpeak-dev.aigdev.com/api/git/getcommits`
 ### URL Parameters
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
+Parameter | Required | Description
+--------- | -------- | -----------
+token  | Yes | Your API Token
 
-## Delete a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
+## Set Current Branch
 
 ```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
+curl "http://pixelpeak-dev.aigdev.com/api/git/setcurrentbranch?token=<token>&branch=<branch>"
 ```
 
-```javascript
-const kittn = require('kittn');
+> The above command returns a message
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
+```json
+Setting Current Branch. Payload: {branch}
 ```
 
-> The above command returns JSON structured like this:
+This endpoint sets the current branch of the deploy cycle
+
+### HTTP Request
+
+`GET http://pixelpeak-dev.aigdev.com/api/git/setcurrentbranch`
+### URL Parameters
+
+Parameter | Required | Description
+--------- | -------- | -----------
+token  | Yes | Your API Token
+branch | Yes | The current branch in the deploy cycle
+
+## Set Previous Branch
+
+```shell
+curl "http://pixelpeak-dev.aigdev.com/api/git/setpreviousbranch?token=<token>&branch=<branch>"
+```
+
+> The above command returns a message
+
+```json
+Setting Previous Branch. Payload: {branch}
+```
+
+This endpoint sets the previous branch of the deploy cycle
+
+### HTTP Request
+
+`GET http://pixelpeak-dev.aigdev.com/api/git/setpreviousbranch`
+### URL Parameters
+
+Parameter | Required | Description
+--------- | -------- | -----------
+token  | Yes | Your API Token
+branch | Yes | The previous branch in the deploy cycle
+
+# Deploy API
+
+## Add Deploy
+
+```shell
+curl "http://pixelpeak-dev.aigdev.com/api/git/adddeploy?token=<token>&author=<author>&description=<description>"
+```
+
+> The above command returns a message
+
+```json
+Adding new deploy! Payload: {description, author}
+```
+
+This endpoint adds a deploy
+
+### HTTP Request
+
+`GET http://pixelpeak-dev.aigdev.com/api/git/adddeploy`
+### URL Parameters
+
+Parameter | Required | Description
+--------- | -------- | -----------
+token  | Yes | Your API Token
+author | Yes | Author who made the deploy
+description | Yes | descripton/details of the deploy
+
+## Get Deploys
+
+```shell
+curl "http://pixelpeak-dev.aigdev.com/api/git/getdeploys?token=<token>"
+```
+
+> The above command returns a message in JSON
 
 ```json
 {
-  "id": 2,
-  "deleted" : ":("
+  [  
+    id: "1",
+    author: "Steve",
+    description: "Deploying new branch to production"
+  ]
 }
 ```
-
-This endpoint deletes a specific kitten.
+This endpoint returns a JSON array of all deploys.
 
 ### HTTP Request
 
-`DELETE http://example.com/kittens/<ID>`
-
+`GET http://pixelpeak-dev.aigdev.com/api/git/getdeploys`
 ### URL Parameters
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+Parameter | Required | Description
+--------- | -------- | -----------
+token  | Yes | Your API Token
 
+# Message API
+
+# Endpoint API
